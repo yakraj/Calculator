@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div class="calculator">
+      <div class="display">
+        <input style="pointer-events: none" id="lastval" type="text" />
+        <input type="text" id="display" />
+        <div id="active-symbol"></div>
+      </div>
+      <div class="numpad-container">
+        <div onclick="ButtonClick('C')" class="numpad clear-all">C</div>
+        <div onclick="ButtonClick('backspace')" class="numpad backspace">X</div>
+        <div onclick="ButtonClick('/')" class="numpad devide">/</div>
+        <div onclick="ButtonClick('*')" class="numpad multiply">*</div>
+        <div onclick="ButtonClick('-')" class="numpad minus">-</div>
+        <div onclick="ButtonClick('7')" class="numpad seven">7</div>
+        <div onclick="ButtonClick('8')" class="numpad eight">8</div>
+        <div onclick="ButtonClick('9')" class="numpad nine">9</div>
+        <div onclick="ButtonClick('4')" class="numpad four">4</div>
+        <div onclick="ButtonClick('5')" class="numpad five">5</div>
+        <div onclick="ButtonClick('6')" class="numpad six">6</div>
+        <div onclick="ButtonClick('1')" class="numpad one">1</div>
+        <div onclick="ButtonClick('2')" class="numpad two">2</div>
+        <div onclick="ButtonClick('3')" class="numpad three">3</div>
+        <div onclick="ButtonClick('0')" class="numpad zero">0</div>
+        <div onclick="ButtonClick('.')" class="numpad desibal">.</div>
+        <div onclick="ButtonClick('=')" class="numpad enter">=</div>
+        <div onclick="ButtonClick('+')" class="numpad plus">+</div>
+      </div>
+    </div>
+
+    <script>
+      let symbol = "";
+      let lastinput = "";
+      let finalRes = "";
+      let symbols = ["/", "*", "-", "+"];
+      var activesy = document.getElementById("active-symbol");
+
+      function Calculator(lastval, display, e) {
+        activesy.innerHTML = e;
+        if (finalRes && symbol) {
+          //data will be placed here
+          if (lastinput == display.value) {
+            symbol = e;
+          } else {
+            if (symbol == "+") {
+              lastval.value = lastval.value + symbol + display.value;
+              var data = Number(finalRes) + Number(display.value);
+              finalRes = data;
+              symbol = e;
+              display.value = data;
+              lastinput = data;
+            } else if (symbol == "-") {
+              lastval.value = lastval.value + symbol + display.value;
+              var data = Number(finalRes) - Number(display.value);
+              finalRes = data;
+              symbol = e;
+              display.value = data;
+              lastinput = data;
+            } else if (symbol == "*") {
+              lastval.value = lastval.value + symbol + display.value;
+              var data = Number(finalRes) * Number(display.value);
+              finalRes = data;
+              symbol = e;
+              display.value = data;
+              lastinput = data;
+            } else if (symbol == "/") {
+              lastval.value = lastval.value + symbol + display.value;
+              var data = Number(finalRes) / Number(display.value);
+              finalRes = data;
+              symbol = e;
+              display.value = data;
+              lastinput = data;
+            }
+          }
+        } else {
+          lastval.value = display.value;
+          finalRes = display.value;
+          symbol = e;
+          display.value = "";
+        }
+        if (symbols.includes(lastval.value[lastval.value.length - 1])) {
+          lastval.value =
+            lastval.value.substring(0, lastval.value.length - 2) + e;
+        }
+        return;
+      }
+
+      display.addEventListener("input", () => {
+        var e = display.value[display.value.length - 1];
+        var cutted = display.value.substring(0, display.value.length - 1);
+
+        if (symbols.includes(e)) {
+          display.value = cutted;
+          Calculator(lastval, display, e);
+          symbol = e;
+        } else {
+          if (cutted && cutted == finalRes) {
+            display.value = "";
+            display.value = e;
+          } else {
+            return;
+          }
+        }
+      });
+
+      const ButtonClick = (e) => {
+        switch (e) {
+          case "C":
+            display.value = "";
+            lastval.value = "";
+            symbol = "";
+            lastAnswer = "";
+            finalRes = "";
+            break;
+          case "/":
+            Calculator(lastval, display, e);
+            break;
+          case "*":
+            Calculator(lastval, display, e);
+            break;
+          case "-":
+            Calculator(lastval, display, e);
+            break;
+          case "+":
+            Calculator(lastval, display, e);
+            break;
+          case "enter":
+            Calculator(lastval, display, e);
+            break;
+
+          default:
+            if (display.value == finalRes) {
+              display.value = "";
+              display.value = display.value + e;
+            } else {
+              display.value = display.value + e;
+            }
+        }
+      };
+    </script>
+  </body>
+</html>
